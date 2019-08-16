@@ -1,0 +1,21 @@
+.icon-button {
+  background: #fff;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 10px;
+  margin: 0 0.5rem;
+}
+
+.icon-button > svg {
+  fill: #64ffc8;
+  width: 2rem;
+  height: 2rem;
+}
+
+.icon-button--active {
+  background: #64ffc8;
+}
+
+.icon-button--active > svg {
+  fill: #fff;
+}

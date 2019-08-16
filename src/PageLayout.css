@@ -1,0 +1,16 @@
+.page-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.control-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.content-space {
+  flex-grow: 1;
+  overflow: auto;
+}

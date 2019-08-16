@@ -1,0 +1,24 @@
+.clue-entry {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.clue-entry__title {
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.clue-entry__title svg {
+  fill: currentColor;
+  height: 0.75em;
+  width: 0.75em;
+  margin-right: 0.5em;
+  opacity: 0.3;
+}
+
+.clue-entry__clue {
+  font-weight: 400;
+  font-size: 0.85em;
+  font-style: italic;
+  opacity: 0.6;
+}

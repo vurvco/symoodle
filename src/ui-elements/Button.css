@@ -1,0 +1,22 @@
+button {
+  cursor: pointer;
+  outline: none;
+}
+
+button:focus {
+  box-shadow: 0 0 10px 3px #FF649B;
+}
+
+.button {
+  font-size: 1.25rem;
+  padding: 0.75em 1.5em;
+  background: #64ffc8;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+}
+
+.button--active {
+  background: #fff;
+  color: #64ffc8;
+}
