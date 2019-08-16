@@ -1,51 +1,51 @@
-import React, { useState, useEffect } from 'react'
-import Webcam from 'react-webcam'
+import React, { useState } from 'react'
 
-import { ReactComponent as Camera } from './camera.svg'
+import SubmitPage from './SubmitPage'
+import CluesPage from './CluesPage'
+import clues from './clues'
 
 import './App.css'
 
-function App() {
-  const [camera, setCamera] = useState(false)
+const pageOptions = {
+  clues: 'CLUES_PAGE',
+  submit: 'SUBMIT_PAGE',
+}
 
-  let cameraButtonClass = 'icon-button'
-  if (camera) {
-    cameraButtonClass = cameraButtonClass + ' icon-button--active'
+export default function App() {
+  const [page, setPage] = useState(pageOptions.submit)
+  const [solved, setSolved] = useState([])
+
+  const availableClues = clues.slice(0, solved.length + 1)
+
+  function checkClue(clue) {
+    const clueId = clue
+      .sort((a, b) => Number(a) - Number(b))
+      .join('-')
+    const unsolved = availableClues[availableClues.length - 1].code
+    if (unsolved === clueId) {
+      setSolved([...solved, clueId])
+      setPage(pageOptions.clues)
+    }
   }
 
-  console.log(window.innerHeight, window.innerWidth)
-
   return (
-    <div>
-      {
-        camera && (
-          <div className="video-container">
-            <Webcam />
-          </div>
+    <div className="app-container">
+      { 
+        page === pageOptions.submit && (
+          <SubmitPage goToClues={() => setPage(pageOptions.clues)}
+            handleClueSubmit={checkClue} />
         )
       }
 
-      <div className="bar bar--top">
-        <div>{ /* top-left */ }</div>
-        <div>{ /* top-center */ }</div>
-        <div>
-          <button className={cameraButtonClass} onClick={() => setCamera(!camera)}>
-            <Camera />
-          </button>
-        </div>
-      </div>
-
-      <div className="bar bar--bottom">
-        <div>{ /* bottom-left */ }</div>
-        <div>
-          <button className="button" onClick={() => console.log('Submit')}>
-            Submit
-          </button>
-        </div>
-        <div>{ /* bottom-right */ }</div>
-      </div>
+      { 
+        page === pageOptions.clues && (
+          <CluesPage goToSubmit={() => setPage(pageOptions.submit)}
+            solved={solved}
+            availableClues={availableClues} />
+        )
+      }
     </div>
   );
 }
 
-export default App;
+export { pageOptions }
