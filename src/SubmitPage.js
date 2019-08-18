@@ -9,6 +9,8 @@ import { ReactComponent as Camera } from './icons/camera.svg'
 import { ReactComponent as Flip } from './icons/flip.svg'
 import { ReactComponent as Anchor } from './icons/anchor.svg'
 
+import './SubmitPage.css'
+
 function setDeviceId(deviceId, constraints) {
   constraints = constraints || {}
 
@@ -22,14 +24,14 @@ function setDeviceId(deviceId, constraints) {
 export default function SubmitPage({ goToClues, handleClueSubmit }) {
   const [camera, setCamera] = useState(false)
   const [cameraFlipped, setCameraFlipped] = useState(false)
-  const [cameraOptions, setCameraOptions] = useState(null)
+  const [cameraOptions, setCameraOptions] = useState([])
 
   const [in1, setIn1] = useState('')
   const [in2, setIn2] = useState('')
   const [in3, setIn3] = useState('')
 
   useEffect(() => {
-    if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
       navigator.mediaDevices.enumerateDevices()
         .then(devices => devices.filter(d => d.kind === 'videoinput'))
         .then(setCameraOptions)
@@ -39,17 +41,19 @@ export default function SubmitPage({ goToClues, handleClueSubmit }) {
   return (
     <PageLayout>
       {
-        camera && !cameraFlipped && (
+        cameraOptions.length > 0 && camera && !cameraFlipped && (
           <div className="video-container">
-            <Webcam audio={false} videoConstraints={setDeviceId(cameraOptions[0].deviceId)} />
+            <Webcam audio={false}
+              videoConstraints={setDeviceId(cameraOptions[0].deviceId)} />
           </div>
         )
       }
 
       {
-        camera && cameraFlipped && (
+        cameraOptions.length > 1 && camera && cameraFlipped && (
           <div className="video-container">
-            <Webcam audio={false} videoConstraints={setDeviceId(cameraOptions[1].deviceId)} />
+            <Webcam audio={false}
+              videoConstraints={setDeviceId(cameraOptions[1].deviceId)} />
           </div>
         )
       }
@@ -64,7 +68,7 @@ export default function SubmitPage({ goToClues, handleClueSubmit }) {
         </div>
         <div>{ /* top-center */ }</div>
         {
-          cameraOptions ? (
+          cameraOptions.length ? (
             <div>
               {
                 camera && cameraOptions.length > 1 && (
@@ -77,7 +81,7 @@ export default function SubmitPage({ goToClues, handleClueSubmit }) {
                 <Camera />
               </IconButton>
             </div>
-          ) : <div></div>
+          ) : (<div></div>)
         }
       </ControlBar>
 
