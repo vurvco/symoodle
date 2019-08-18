@@ -12,7 +12,7 @@ const pageOptions = {
 }
 
 export default function App() {
-  const [page, setPage] = useState(pageOptions.submit)
+  const [page, setPage] = useState(pageOptions.clues)
   const [solved, setSolved] = useState([])
 
   const availableClues = clues.slice(0, solved.length + 1)
