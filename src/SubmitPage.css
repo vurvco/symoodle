@@ -31,3 +31,12 @@
 .temp-input:focus {
   box-shadow: 0 0 10px 3px #FF649B;
 }
+
+.grid-wrapper {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

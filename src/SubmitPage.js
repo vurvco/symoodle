@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Webcam from 'react-webcam'
 
+import Grid from './Grid/Grid'
 import { PageLayout, ContentSpace, ControlBar } from './PageLayout'
 import Button from './ui-elements/Button'
 import IconButton from './ui-elements/IconButton'
@@ -11,49 +12,48 @@ import { ReactComponent as Anchor } from './icons/anchor.svg'
 
 import './SubmitPage.css'
 
-function setDeviceId(deviceId, constraints) {
-  constraints = constraints || {}
-
-  constraints.deviceId = {
-    exact: deviceId
-  }
-
-  return constraints
-}
-
 export default function SubmitPage({ goToClues, handleClueSubmit }) {
   const [camera, setCamera] = useState(false)
-  const [cameraFlipped, setCameraFlipped] = useState(false)
+  const [cameraIndex, setCameraIndex] = useState(0)
   const [cameraOptions, setCameraOptions] = useState([])
+  const [cameraError, setCameraError] = useState(false)
 
-  const [in1, setIn1] = useState('')
-  const [in2, setIn2] = useState('')
-  const [in3, setIn3] = useState('')
+  const [resetGrid, setResetGrid] = useState(false)
+  const [code, setCode] = useState('')
 
-  useEffect(() => {
-    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+  function onUserMedia(stream) {
+    try {
       navigator.mediaDevices.enumerateDevices()
         .then(devices => devices.filter(d => d.kind === 'videoinput'))
         .then(setCameraOptions)
+    } catch (err) {
+      setCameraError(true)
     }
-  }, [])
+  }
+
+  function getVideoConstraint() {
+    if (!cameraOptions.length) return null
+
+    return { 
+      deviceId: { 
+        exact: cameraOptions[cameraIndex].deviceId
+      }
+    }
+  }
+
+  function handleSubmitCode() {
+    handleClueSubmit(code)
+    setResetGrid(true)
+  }
 
   return (
     <PageLayout>
       {
-        cameraOptions.length > 0 && camera && !cameraFlipped && (
+        camera && (
           <div className="video-container">
             <Webcam audio={false}
-              videoConstraints={setDeviceId(cameraOptions[0].deviceId)} />
-          </div>
-        )
-      }
-
-      {
-        cameraOptions.length > 1 && camera && cameraFlipped && (
-          <div className="video-container">
-            <Webcam audio={false}
-              videoConstraints={setDeviceId(cameraOptions[1].deviceId)} />
+              videoConstraints={getVideoConstraint()}
+              onUserMedia={onUserMedia} />
           </div>
         )
       }
@@ -68,11 +68,12 @@ export default function SubmitPage({ goToClues, handleClueSubmit }) {
         </div>
         <div>{ /* top-center */ }</div>
         {
-          cameraOptions.length ? (
+          !cameraError ? (
             <div>
               {
                 camera && cameraOptions.length > 1 && (
-                  <IconButton selected={cameraFlipped} handleClick={() => setCameraFlipped(!cameraFlipped)}>
+                  <IconButton selected={true}
+                    handleClick={() => setCameraIndex((cameraIndex + 1) % cameraOptions.length)}>
                     <Flip />
                   </IconButton>
                 )
@@ -86,15 +87,18 @@ export default function SubmitPage({ goToClues, handleClueSubmit }) {
       </ControlBar>
 
       <ContentSpace>
-        <input value={in1} onChange={e => setIn1(e.target.value)} className="temp-input" />
-        <input value={in2} onChange={e => setIn2(e.target.value)} className="temp-input" />
-        <input value={in3} onChange={e => setIn3(e.target.value)} className="temp-input" />
+        <div className="grid-wrapper">
+          <Grid camera={camera}
+            resetGrid={resetGrid}
+            setResetGrid={setResetGrid}
+            setCode={setCode} />
+        </div>
       </ContentSpace>
 
       <ControlBar>
         <div>{ /* bottom-left */ }</div>
         <div>
-          <Button handleClick={() => handleClueSubmit([in1, in2, in3])}>
+          <Button handleClick={() => handleSubmitCode()}>
             Submit
           </Button>
         </div>

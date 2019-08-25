@@ -12,18 +12,15 @@ const pageOptions = {
 }
 
 export default function App() {
-  const [page, setPage] = useState(pageOptions.clues)
+  const [page, setPage] = useState(pageOptions.submit)
   const [solved, setSolved] = useState([])
 
   const availableClues = clues.slice(0, solved.length + 1)
 
   function checkClue(clue) {
-    const clueId = clue
-      .sort((a, b) => Number(a) - Number(b))
-      .join('-')
     const unsolved = availableClues[availableClues.length - 1].code
-    if (unsolved === clueId) {
-      setSolved([...solved, clueId])
+    if (unsolved === clue) {
+      setSolved([...solved, clue])
       setPage(pageOptions.clues)
     }
   }
