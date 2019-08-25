@@ -36,7 +36,7 @@ class Grid extends Component {
         let id = 0
         for (var y = 0; y < 5; y++) {
           for (var x = 0; x < 5;  x++) {
-            this.dots.push(new Dot(100 + x * 50, 100 + y * 50, id++, p5))
+            this.dots.push(new Dot(75 + x * 62.5, 75 + y * 62.5, id++, p5))
           }
         }
       }
@@ -51,20 +51,16 @@ class Grid extends Component {
         p5.clear();
         const dotColor = this.props.camera ? 'rgb(100, 255, 200)' : 110;
 
-        // Dot Aesthetic
-        p5.stroke(dotColor);
-        p5.fill(dotColor);
-        p5.strokeWeight(2);
-  
         // Grid
         this.dots.forEach(dot => {
-          dot.draw()
+          dot.draw(dotColor)
 
           if (this.startDot) {
             const lineLength = Math.hypot(this.startDot.x - p5.mouseX, this.startDot.y - p5.mouseY)
             if (lineLength > 85) {
               this.startDot = null
             } else {
+              p5.strokeWeight(1);
               p5.line(this.startDot.x, this.startDot.y, p5.mouseX, p5.mouseY)
             }
           }
@@ -82,7 +78,7 @@ class Grid extends Component {
           }
         })
 
-        this.lines.forEach(line => line.draw())
+        this.lines.forEach(line => line.draw(dotColor))
       }
 
       p5.mousePressed = () => {

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import SubmitPage from './SubmitPage'
 import CluesPage from './CluesPage'
 import clues from './clues'
+import Modal from './Modal'
 
 import './App.css'
 
@@ -15,6 +16,9 @@ export default function App() {
   const [page, setPage] = useState(pageOptions.submit)
   const [solved, setSolved] = useState([])
 
+  const [successModal, setSuccessModal] = useState(false)
+  const [failureModal, setFailureModal] = useState(false)
+
   const availableClues = clues.slice(0, solved.length + 1)
 
   function checkClue(clue) {
@@ -22,6 +26,9 @@ export default function App() {
     if (unsolved === clue) {
       setSolved([...solved, clue])
       setPage(pageOptions.clues)
+      setSuccessModal(true)
+    } else {
+      setFailureModal(true)
     }
   }
 
@@ -40,6 +47,14 @@ export default function App() {
             solved={solved}
             availableClues={availableClues} />
         )
+      }
+
+      {
+        successModal && <Modal correct={true} onTimeout={() => setSuccessModal(false)} />
+      }
+
+      {
+        failureModal && <Modal correct={false} onTimeout={() => setFailureModal(false)} />
       }
     </div>
   );

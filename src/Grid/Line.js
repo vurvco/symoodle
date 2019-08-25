@@ -5,7 +5,10 @@ export default class Line {
     this.p5 = p5
   }
 
-  draw() {
+  draw(color) {
+    this.p5.stroke(color);
+    this.p5.strokeWeight(3);
+
     this.p5.line(
       this.dot1.x,
       this.dot1.y,

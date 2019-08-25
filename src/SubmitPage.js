@@ -21,7 +21,7 @@ export default function SubmitPage({ goToClues, handleClueSubmit }) {
   const [resetGrid, setResetGrid] = useState(false)
   const [code, setCode] = useState('')
 
-  function onUserMedia(stream) {
+  function onUserMedia() {
     try {
       navigator.mediaDevices.enumerateDevices()
         .then(devices => devices.filter(d => d.kind === 'videoinput'))
@@ -42,8 +42,8 @@ export default function SubmitPage({ goToClues, handleClueSubmit }) {
   }
 
   function handleSubmitCode() {
-    handleClueSubmit(code)
     setResetGrid(true)
+    handleClueSubmit(code)
   }
 
   return (
