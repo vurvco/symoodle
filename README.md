@@ -2,6 +2,8 @@
 
 Symoodle is a tool to use symbols to unlock secrets.
 
+![](https://user-images.githubusercontent.com/16308368/63875245-a6a3d200-c988-11e9-9c67-e8c560fcdd53.png)
+
 ## Install / Run
 
 Symoodle is scaffolded with [Create-React-App](https://github.com/facebook/create-react-app).
