@@ -1,3 +1,5 @@
+// Helper class to keep track of and draw lines
+// Uses dots for start/end points
 export default class Line {
   constructor(dot1, dot2, p5) {
     this.dot1 = dot1

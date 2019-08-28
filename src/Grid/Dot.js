@@ -1,9 +1,15 @@
+// Helper class to keep track of and draw dots
 export default class Dot {
   constructor(x, y, id, p5) {
+    // Used for drawing ellipse
     this.x = x
     this.y = y
-    this.id = id
     this.r = 5
+
+    // Used for code
+    this.id = id
+
+    // Need a ref to p5 for draw
     this.p5 = p5
   }
 
@@ -17,6 +23,8 @@ export default class Dot {
   }
 
   inDot(x, y) {
+    // Determine if x,y is within
+    // the circle at this.x, this.y with a radius of this.r*5
     return Math.sqrt(
       (x-this.x)*(x-this.x) + (y-this.y)*(y-this.y)
     ) < this.r * 5

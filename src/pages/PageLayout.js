@@ -2,6 +2,10 @@ import React from 'react'
 
 import './PageLayout.css'
 
+/*
+ * Just some CSS wrappers to create
+ * a unified page layout
+ */
 function PageLayout({ children }) {
   return (
     <div className="page-layout">

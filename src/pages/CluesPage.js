@@ -1,14 +1,17 @@
 import React from 'react'
 
 import { PageLayout, ContentSpace, ControlBar } from './PageLayout'
-import IconButton from './ui-elements/IconButton'
+import IconButton from '../ui-elements/IconButton'
 
-import { ReactComponent as Helm } from './icons/helm.svg'
-import { ReactComponent as Locked } from './icons/locked.svg'
-import { ReactComponent as Unlocked } from './icons/unlocked.svg'
+import { ReactComponent as Helm } from '../icons/helm.svg'
+import { ReactComponent as Locked } from '../icons/locked.svg'
+import { ReactComponent as Unlocked } from '../icons/unlocked.svg'
 
 import './CluesPage.css'
 
+/*
+ * Page to display solved clues and the next unsolved clue
+ */
 export default function CluesPage({ goToSubmit, solved, availableClues }) {
   return (
     <PageLayout>
@@ -20,12 +23,14 @@ export default function CluesPage({ goToSubmit, solved, availableClues }) {
             </IconButton>
           }
         </div>
-        <div>{ /* top-center */ }</div>
-        <div>{ /* top-right */ }</div>
+        <div>{ /* top-center of control bar */ }</div>
+        <div>{ /* top-right of control bar */ }</div>
       </ControlBar>
       <ContentSpace>
         {
           availableClues.reverse().map((clue, i) => {
+            // Loop over clues to determine which ones
+            // are solved and which one isn't
             const clueSolved = solved.includes(clue.code)
 
             return (

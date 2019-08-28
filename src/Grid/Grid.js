@@ -12,27 +12,32 @@ class Grid extends Component {
     this.drawing = false
     this.dots = []
     this.lines = []
+
+    // As we're drawing a new line
+    // we need to keep track of where we're drawing from
     this.startDot = null
 
     this.handleSetCode = this.handleSetCode.bind(this)
   }
 
+  // Generate a new code whenever we draw a new line
   handleSetCode() {
     let lines = this.lines.map(line => {
       return [line.dot1.id, line.dot2.id].sort((a, b) => a - b).join('-')
     })
     let uniqueLines = Array.from(new Set(lines)).sort()
     let code = uniqueLines.join(';')
-    // console.log(code)
     this.props.setCode(code)
   }
 
   componentDidMount() {
     this.sketch = new p5(p5 => {
       p5.setup = () => {
+        // Create and mount canvas
         const canvas = p5.createCanvas(400, 400);
         canvas.parent('p5-container');
 
+        // Create grid Dots
         let id = 0
         for (var y = 0; y < 5; y++) {
           for (var x = 0; x < 5;  x++) {
@@ -42,6 +47,7 @@ class Grid extends Component {
       }
 
       p5.draw = () => {
+        // Resets the drawing data
         if(this.props.resetGrid) {
           this.lines = []
           this.startDot = null
@@ -58,8 +64,10 @@ class Grid extends Component {
           if (this.startDot) {
             const lineLength = Math.hypot(this.startDot.x - p5.mouseX, this.startDot.y - p5.mouseY)
             if (lineLength > 85) {
+              // If lineLength is too long, cancel it
               this.startDot = null
             } else {
+              // otherwise draw where user is going
               p5.strokeWeight(1);
               p5.line(this.startDot.x, this.startDot.y, p5.mouseX, p5.mouseY)
             }
@@ -68,8 +76,12 @@ class Grid extends Component {
           if (this.drawing) {
             if (dot.inDot(p5.mouseX, p5.mouseY)) {
               if (!this.startDot) {
+                // If this is the first dot they've drawn on
+                // add it as the starting point
                 this.startDot = dot
               } else if (this.startDot.id !== dot.id) {
+                // If they touch another dot
+                // create a new line and update code
                 this.lines.push(new Line(this.startDot, dot, p5))
                 this.startDot = null
                 this.handleSetCode()
@@ -110,6 +122,7 @@ class Grid extends Component {
   }
 
   render() {
+    // Create p5 mount
     return <div id="p5-container" className={!this.props.camera ? 'p5-container--background': ''}></div>
   }
 }

@@ -1,30 +1,36 @@
 import React, { useState } from 'react'
 
-import SubmitPage from './SubmitPage'
-import CluesPage from './CluesPage'
-import clues from './clues'
-import Modal from './Modal'
+import SubmitPage from './pages/SubmitPage'
+import CluesPage from './pages/CluesPage'
+import Modal from './ui-elements/Modal'
 
-import './App.css'
+import clues from './clues'
 
 const pageOptions = {
   clues: 'CLUES_PAGE',
   submit: 'SUBMIT_PAGE',
 }
 
+/*
+ * Top level component
+ * handles routing, modals, and clues
+ */ 
 export default function App() {
-  const [page, setPage] = useState(pageOptions.submit)
-  const [solved, setSolved] = useState([])
-
+  // Routing
+  const [page, setPage] = useState(pageOptions.clues)
+  
+  // Modal state
   const [successModal, setSuccessModal] = useState(false)
   const [failureModal, setFailureModal] = useState(false)
-
+  
+  // Clue state, available clues = solved clues + 1 unsolved clue
+  const [solved, setSolved] = useState([])
   const availableClues = clues.slice(0, solved.length + 1)
 
-  function checkClue(clue) {
+  function checkClue(submission) {
     const unsolved = availableClues[availableClues.length - 1].code
-    if (unsolved === clue) {
-      setSolved([...solved, clue])
+    if (unsolved === submission) {
+      setSolved([...solved, submission])
       setPage(pageOptions.clues)
       setSuccessModal(true)
     } else {
